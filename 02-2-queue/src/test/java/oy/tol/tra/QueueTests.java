@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Order;
  */
 @DisplayName("Basic tests for the QueueImplementation class.")
 @TestMethodOrder(OrderAnnotation.class)
- public class QueueTests 
+ public class       QueueTests
 {
     static Random randomizer = null;
     static final int MIN_QUEUE_SIZE = 10;
