@@ -39,10 +39,21 @@ public class Person implements Comparable<Person> {
      */
     @Override
     public int hashCode() {
-        int hash = 5381;
-        // Implement hash function here.
+        final int prime = 31;
+        int hash = 5381; // Initial hash value, same as the one you provided
+        // Calculate hash for first name
+        for (int i = 0; i < firstName.length(); i++) {
+            hash = prime * hash + (int) firstName.charAt(i);
+        }
+        // Add a delimiter between first and last names
+        hash = prime * hash + 31; // Using a different prime number as a delimiter
+        // Calculate hash for last name
+        for (int i = 0; i < lastName.length(); i++) {
+            hash = prime * hash + (int) lastName.charAt(i);
+        }
         return hash;
     }
+
 
     @Override
     public boolean equals(Object other) {

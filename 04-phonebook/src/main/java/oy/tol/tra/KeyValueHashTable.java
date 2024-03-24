@@ -22,7 +22,7 @@ public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary
 
     @Override
     public Type getType() {
-        return Type.NONE;
+        return Type.HASHTABLE;
     }
 
     @SuppressWarnings("unchecked")
@@ -42,7 +42,7 @@ public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary
     @Override
     public int size() {
         // TODO: Implement this.
-        return 0;
+        return count;
     }
 
     /**
@@ -72,7 +72,9 @@ public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary
     public boolean add(K key, V value) throws IllegalArgumentException, OutOfMemoryError {
         // TODO: Implement this.
         // Remeber to check for null values.
-
+        if(key==null||value==null){
+            throw new IllegalArgumentException("not null");
+        }
         // Checks if the LOAD_FACTOR has been exceeded --> if so, reallocates to a bigger hashtable.
         if (((double)count * (1.0 + LOAD_FACTOR)) >= values.length) {
             reallocate((int)((double)(values.length) * (1.0 / LOAD_FACTOR)));
@@ -82,17 +84,60 @@ public class KeyValueHashTable<K extends Comparable<K>, V> implements Dictionary
         // if index was taken by different Person (collision), get new hash and index,
         // insert into table when the index has a null in it,
         // return true if existing Person updated or new Person inserted.
-        
-        return false;
+        // Compute hash index
+        int index = key.hashCode()%values.length;
+        if(index<0){
+            index+= values.length;
+        }
+
+        // Handle collisions
+        int probingSteps = 0;
+        while (values[index] != null) {
+            if (values[index].getKey().equals(key)) {
+                // Key already exists, replace value
+                values[index].setValue(value);
+                return true;
+            }
+            index = (index + 1) % values.length; // Linear probing
+            probingSteps++;
+        }
+
+        // Insert new key-value pair
+        values[index] = new Pair<>(key, value);
+        count++;
+        collisionCount = Math.max(collisionCount, probingSteps);
+        maxProbingSteps = Math.max(maxProbingSteps, probingSteps);
+        return true;
     }
 
     @Override
     public V find(K key) throws IllegalArgumentException {
         // Remember to check for null.
-
+        if(key==null){
+            throw new NullPointerException("not null");
+        }
         // Must use same method for computing index as add method
-        
+        int index = findIndex(key);
+        if (index != -1) {
+            return values[index].getValue();
+        }
         return null;
+    }
+    private int findIndex(K key) {
+        int index = key.hashCode()% values.length;
+        if(index<0){
+            index+= values.length;
+        }
+        int probingSteps = 0;
+        while (values[index] != null && !values[index].getKey().equals(key)) {
+            index = (index + 1) % values.length; // Linear probing
+            probingSteps++;
+        }
+        if (values[index] != null) {
+            collisionCount = Math.max(collisionCount, probingSteps);
+            return index;
+        }
+        return -1;
     }
 
     @Override
