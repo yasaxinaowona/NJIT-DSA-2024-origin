@@ -84,7 +84,9 @@ public class Algorithms {
 			return (top == -1);
 		}
 	}
-
+	public static <E extends Comparable<E>> void quickSort(E[] array){
+		quickSort(array,0,array.length-1);
+	}
 	public static <E extends Comparable<E>> void quickSort(E[] array, int begin, int end) {
 		if (begin >= end) return; // Base case
 
