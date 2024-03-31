@@ -45,8 +45,8 @@ public class Algorithms {
 		}
 	}
 
-	public static <E extends Comparable<E>> void fastSort(E[] array, int begin, int end) {
-		quickSort(array, begin, end);
+	public static <E extends Comparable<E>> void fastSort(E[] array) {
+		quickSort(array, 0, array.length-1);
 	}
 
 	static class Stack {
@@ -75,9 +75,6 @@ public class Algorithms {
 		public boolean isEmpty() {
 			return (top == -1);
 		}
-	}
-	public static <E extends Comparable<E>> void quickSort(E[] array){
-		quickSort(array,0,array.length-1);
 	}
 	public static <E extends Comparable<E>> void quickSort(E[] array, int begin, int end) {
 		if (begin >= end) return; // Base case
