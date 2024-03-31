@@ -49,9 +49,6 @@ public class Algorithms {
 		}
 	}
 
-	public static <E extends Comparable<E>> void fastSort(E[] array) {
-		quickSort(array, 0, array.length-1);
-	}
 
 	public static void sortWithComparator(Person[] array, Comparator Comparator) {
 		Arrays.sort(array ,Comparator);
@@ -84,7 +81,7 @@ public class Algorithms {
 			return (top == -1);
 		}
 	}
-	public static <E extends Comparable<E>> void quickSort(E[] array){
+	public static <E extends Comparable<E>> void fastSort(E[] array){
 		quickSort(array,0,array.length-1);
 	}
 	public static <E extends Comparable<E>> void quickSort(E[] array, int begin, int end) {
